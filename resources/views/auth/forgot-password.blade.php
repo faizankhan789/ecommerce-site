@@ -89,11 +89,21 @@
     
     .card-wrapper {
       width: 440px;
-      max-width: 100%;
+      max-width: 90%;
       background-color: #2b2e38;
       padding: 40px;
       border-radius: 6px;
       box-shadow: 0 4px 8px 0 rgba(21,21,21,.2);
+    }
+    
+    @media (max-width: 480px) {
+      .card-wrapper {
+        padding: 30px 20px;
+      }
+      
+      h4 {
+        font-size: 1.5rem;
+      }
     }
     
     .success-message {

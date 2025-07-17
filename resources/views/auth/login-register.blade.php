@@ -62,12 +62,32 @@
     .card-3d-wrap {
       position: relative;
       width: 440px;
-      max-width: 100%;
+      max-width: 90%;
       height: 400px;
       -webkit-transform-style: preserve-3d;
       transform-style: preserve-3d;
       perspective: 800px;
       margin-top: 60px;
+    }
+    
+    @media (max-width: 480px) {
+      .card-3d-wrap {
+        height: 450px;
+        margin-top: 40px;
+      }
+      
+      .center-wrap {
+        padding: 0 25px;
+      }
+      
+      h4 {
+        font-size: 1.5rem;
+      }
+      
+      h6 span {
+        padding: 0 10px;
+        font-size: 0.9rem;
+      }
     }
     
     .card-3d-wrapper {
