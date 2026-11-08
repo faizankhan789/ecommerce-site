@@ -1,64 +1,119 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<h1 align="center">🛒 E-commerce Site</h1>
+
+<p align="center">An online store built with <strong>Laravel 8</strong>: browse categories and products, search with autocomplete, keep a cart as a guest or a signed-in user, and check out to place orders.</p>
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img alt="PHP" src="https://img.shields.io/badge/PHP-7.3%20%7C%208-777bb4?style=flat-square&logo=php&logoColor=white">
+  <img alt="Laravel" src="https://img.shields.io/badge/Laravel-8-ff2d20?style=flat-square&logo=laravel&logoColor=white">
+  <img alt="MySQL" src="https://img.shields.io/badge/MySQL-4479a1?style=flat-square&logo=mysql&logoColor=white">
+  <img alt="Tailwind" src="https://img.shields.io/badge/Tailwind-2-06b6d4?style=flat-square&logo=tailwindcss&logoColor=white">
+  <img alt="Alpine.js" src="https://img.shields.io/badge/Alpine.js-3-8bc0d0?style=flat-square&logo=alpinedotjs&logoColor=black">
 </p>
 
-## About Laravel
+<p align="center">
+  <a href="#-features"><b>Features</b></a> ·
+  <a href="#-how-a-purchase-flows">Purchase flow</a> ·
+  <a href="#-data-model">Data model</a> ·
+  <a href="#-getting-started">Getting started</a> ·
+  <a href="#-routes">Routes</a>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Catalog.** Six top-level categories (Electronics, Fashion, Home & Living, Books, Sports, Beauty), each with subcategories, and products with a price and a compare-at price.
+- **Search.** Full search page plus an autocomplete endpoint.
+- **Cart.** Works for guests (tracked by session) and for signed-in users (tracked by user). Add, update quantity, remove, and a live item count.
+- **Accounts.** Register, log in and out, forgot and reset password, and a dashboard. Login and register share one combined form.
+- **Checkout.** Validated shipping details and cash on delivery. Orders get an `ORD-` number and are written in a database transaction.
+- **Orders.** Order history, order detail and a success page for signed-in users.
+- **Pricing rules.** Shipping is free above 50 and 10 otherwise; tax is 10% of the subtotal.
 
-## Learning Laravel
+## 🔁 How a purchase flows
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```mermaid
+flowchart LR
+    A[Browse categories<br/>or search] --> B[Product page]
+    B --> C[Add to cart<br/>guest or user]
+    C --> D{Signed in?}
+    D -->|no| E[Login / register]
+    E --> F
+    D -->|yes| F[Checkout<br/>shipping + payment method]
+    F --> G[(Order + order items<br/>in one transaction)]
+    G --> H[Order success page]
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🗃️ Data model
 
-## Laravel Sponsors
+```mermaid
+erDiagram
+    CATEGORY ||--o{ CATEGORY : "has subcategories"
+    CATEGORY ||--o{ PRODUCT : contains
+    USER ||--o{ CART : owns
+    PRODUCT ||--o{ CART : "in"
+    USER ||--o{ ORDER : places
+    ORDER ||--o{ ORDER_ITEM : contains
+    PRODUCT ||--o{ ORDER_ITEM : "ordered as"
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## 🧰 Tech stack
 
-### Premium Partners
+| Layer | Tools |
+|---|---|
+| Backend | Laravel 8, PHP 7.3 or 8, Laravel Sanctum, Laravel Breeze (auth scaffolding) |
+| Database | MySQL (configured in `.env.example`) |
+| Frontend | Blade templates, Tailwind CSS 2, Alpine.js 3, Axios |
+| Build | Laravel Mix |
+| Tests | PHPUnit |
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## 🚀 Getting started
 
-## Contributing
+Requires PHP, Composer, Node.js and a MySQL database.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+git clone https://github.com/faizankhan789/ecommerce-site.git
+cd ecommerce-site
 
-## Code of Conduct
+composer install
+npm install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+cp .env.example .env
+php artisan key:generate
+# edit .env: set DB_DATABASE, DB_USERNAME, DB_PASSWORD
 
-## Security Vulnerabilities
+php artisan migrate
+php artisan db:seed --class=CategoryProductSeeder   # sample categories and products
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+npm run dev          # build assets (or `npm run watch`)
+php artisan serve    # http://127.0.0.1:8000
+```
 
-## License
+Run the tests with `php artisan test` (or `vendor/bin/phpunit`).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🧭 Routes
+
+| Area | Routes |
+|---|---|
+| Home and auth | `/`, `/login`, `/register`, `/forgot-password`, `/reset-password`, `/dashboard` |
+| Catalog | `/categories`, `/category/{slug}`, `/products`, `/product/{slug}`, `/api/subcategories/{parentId}` |
+| Search | `/search`, `/search/autocomplete` |
+| Cart | `/cart`, `/cart/add`, `/cart/update/{id}`, `/cart/remove/{id}`, `/cart/count` |
+| Checkout and orders (login required) | `/checkout`, `/checkout/process`, `/orders`, `/orders/{orderNumber}`, `/orders/success/{orderNumber}` |
+
+## 📁 Project structure
+
+```text
+app/
+  Http/Controllers/   Auth/, Category, Product, Search, Cart, Checkout, Order
+  Models/             User, Category, Product, Cart, Order, OrderItem
+database/
+  migrations/         users, categories, products, carts, orders and order items
+  seeders/            CategoryProductSeeder (sample catalog)
+resources/views/      auth, cart, categories, checkout, orders, products, search, layouts
+routes/web.php        all web routes
+```
+
+## 📄 License
+
+Built on the Laravel framework, which is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT). This project's `composer.json` declares `MIT`.
